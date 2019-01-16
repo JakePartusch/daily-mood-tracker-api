@@ -1,0 +1,30 @@
+{
+  "name": "day-tracker-function",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "precommit": "pretty-quick --staged",
+    "prettier": "prettier --write 'src/**/*.ts'",
+    "deploy": "cd dist &&  npm install --production  && serverless deploy",
+    "build": "parcel build src/handler.ts --target=node && cp serverless.yml dist && cp package.json dist"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.388.0",
+    "graphql": "^14.1.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.13",
+    "@types/node": "^10.10.3",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "husky": "^1.0.0-rc.15",
+    "jest": "^23.6.0",
+    "parcel-bundler": "^1.9.7",
+    "prettier": "^1.14.3",
+    "pretty-quick": "^1.7.0",
+    "typescript": "^3.0.3"
+  }
+}
