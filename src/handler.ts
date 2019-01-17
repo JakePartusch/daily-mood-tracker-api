@@ -8,7 +8,7 @@ import {
   GraphQLList
 } from 'graphql';
 import { DynamoDB } from 'aws-sdk';
-import { APIGatewayProxyResult, APIGatewayEvent } from 'aws-lambda';
+import { APIGatewayEvent } from 'aws-lambda';
 
 const dynamoDb = new DynamoDB.DocumentClient();
 
@@ -95,7 +95,8 @@ const schema = new GraphQLSchema({
 // The event properties are specific to AWS. Other providers will differ.
 module.exports.query = async (event: APIGatewayEvent, _, callback) => {
   console.log(JSON.stringify(event, null, 2));
-  const result = await graphql(schema, event.queryStringParameters.query);
+  const body = JSON.parse(event.body);
+  const result = await graphql(schema, body.query);
   console.log(JSON.stringify(result, null, 2));
   callback(null, { statusCode: 200, body: JSON.stringify(result) });
 };

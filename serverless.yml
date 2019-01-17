@@ -20,7 +20,7 @@ functions:
     events:
       - http:
           path: query
-          method: get
+          method: post
 
 resources:
   Resources:
