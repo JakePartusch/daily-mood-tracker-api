@@ -63,21 +63,17 @@ const MoodEntryInput = new GraphQLInputObjectType({
 
 const schema = new GraphQLSchema({
   query: new GraphQLObjectType({
-    name: 'RootQueryType', // an arbitrary name
+    name: 'MoodDataQuery',
     fields: {
-      // the query has a field called 'greeting'
       moodData: {
-        // we need to know the user's name to greet them
         args: { user: { name: 'user', type: new GraphQLNonNull(GraphQLString) } },
-        // the greeting message is a string
         type: new GraphQLList(MoodEntryType),
-        // resolve to a greeting message
         resolve: (parent, args) => getMoodData(args.user)
       }
     }
   }),
   mutation: new GraphQLObjectType({
-    name: 'RootMutationType', // an arbitrary name
+    name: 'MoodDataMutation',
     fields: {
       updateMoodData: {
         args: {
@@ -91,8 +87,6 @@ const schema = new GraphQLSchema({
   })
 });
 
-// We want to make a GET request with ?query=<graphql query>
-// The event properties are specific to AWS. Other providers will differ.
 module.exports.query = async (event: APIGatewayEvent, _, callback) => {
   console.log(JSON.stringify(event, null, 2));
   const body = JSON.parse(event.body);
