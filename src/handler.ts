@@ -37,6 +37,19 @@ const updateMoodData = async (user: string, moodData) => {
   return moodData;
 };
 
+const createMoodData = async (user: string, moodData) => {
+  await dynamoDb
+    .put({
+      TableName: process.env.DYNAMODB_TABLE,
+      Item: {
+        user,
+        moodData
+      }
+    })
+    .promise();
+  return moodData;
+};
+
 const MoodEntryType = new GraphQLObjectType({
   name: 'MoodEntry',
   fields: {
@@ -82,6 +95,14 @@ const schema = new GraphQLSchema({
         },
         type: new GraphQLList(MoodEntryType),
         resolve: (parent, args) => updateMoodData(args.user, args.moodData)
+      },
+      createMoodData: {
+        args: {
+          user: { name: 'user', type: new GraphQLNonNull(GraphQLString) },
+          moodData: { name: 'moodData', type: new GraphQLList(MoodEntryInput) }
+        },
+        type: new GraphQLList(MoodEntryType),
+        resolve: (parent, args) => createMoodData(args.user, args.moodData)
       }
     }
   })
